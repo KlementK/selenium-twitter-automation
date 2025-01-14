@@ -101,19 +101,21 @@ python main.py -e "your_email@example.com" -p "your_password" [options]
 ```
 selenium-twitter-automation/
 │
-├── main.py                         # Main entry point for the script
-├── requirements.txt                # Python dependencies
+├── main.py                         
+├── requirements.txt               
 ├── webdriver/                      # Folder for geckodriver.exe
 ├── src/
-│   ├── __init__.py                 # Marks the src folder as a package
-│   ├── argument_parser.py          # Handles command-line argument parsing
-│   ├── scraper.py                  # Core scraper logic
-│   ├── interaction.py              # Handles interactions like commenting, liking, etc.
-│   ├── scroller.py                 # Handles scrolling logic
-│   ├── utils.py                    # Utility functions for logging, saving data, etc.
-│   ├── tweet.py                    # Class for handling tweet objects
-│   └── user.py                     # Handles user-related actions (follow, unfollow, etc.)
-└── README.md                       # Project documentation
+│   ├── __init__.py                 
+│   ├── argument_parser.py          
+│   ├── interaction.py              
+│   ├── scraper.py
+│   ├── scroller.py               
+│   ├── search.py                  
+│   ├── summarizer.py                          
+│   ├── tweet.py                    
+│   ├── user.py
+│   └── utils.py         
+└── README.md                       
 ```
 
 ---
