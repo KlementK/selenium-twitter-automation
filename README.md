@@ -105,22 +105,22 @@ python main.py [options]
 
 ### **Command-Line Arguments**
 
-| Argument               | Short | Description                                                       | Example                                                 |
-|------------------------|-------|-------------------------------------------------------------------|---------------------------------------------------------|
-| **--email**            | `-e`  | **Required.** Your Twitter account email.                         | `-e your_email@example.com`                             |
-| **--password**         | `-p`  | **Required.** Your Twitter account password.                      | `-p your_password`                                      |
-| **--search**           | `-s`  | Search for a term/hashtag/user.                                   | `-s "selenium"` or `-s "#Python"`                       |
-| **--like**             | `-lk` | Like a tweet by ID.                                               | `-lk 1234567890`                                        |
-| **--tweet**            | `-twt`| Post a new tweet with the provided text.                          | `-twt "Hello Twitter!"`                                 |
-| **--comment**          | `-com`| Comment on a tweet by ID.                                         | `-com 1234567890`                                       |
-| **--retweet**          | `-ret`| Retweet a tweet by ID.                                            | `-ret 1234567890`                                       |
-| **--quote**            | `-quo`| Quote-tweet a tweet by ID with added text.                        | `-quo 1234567890`                                       |
-| **--follow**           | `-fol`| Follow a user by username.                                        | `-fol TwitterDev`                                       |
-| **--unfollow**         | `-unf`| Unfollow a user by username.                                      | `-unf TwitterDev`                                       |
-| **--profile**          | `-pr` | Open your own Twitter profile page.                               | `-pr`                                                   |
-| **--summarize**        | `-sum`| Summarize scraped tweets.                                         | `-sum`                                                  |
-| **--output**           | `-out`| Output file to save scraped tweets (`CSV` or `JSON`).             | `-out tweets.csv` or `-out tweets.json`                 |
-| **--help**             | `-h`  | Shows help message with details of available arguments.           | `-h`                                                    |
+| Argument               |  Short | Description                                                       | Example                                                 |
+|------------------------|--------|-------------------------------------------------------------------|---------------------------------------------------------|
+| **--email**            | `-e`   | **Required.** Your Twitter account email.                         | `-e your_email@example.com`                             |
+| **--password**         | `-p`   | **Required.** Your Twitter account password.                      | `-p your_password`                                      |
+| **--search**           | `-s`   | Search for a term/hashtag/user.                                   | `-s "selenium"` or `-s "#Python"`                       |
+| **--like**             | `-lk`  | Like a tweet by ID.                                               | `-lk 1234567890`                                        |
+| **--tweet**            | `-twt` | Post a new tweet with the provided text.                          | `-twt "Hello Twitter!"`                                 |
+| **--comment**          | `-com` | Comment on a tweet by ID.                                         | `-com 1234567890`                                       |
+| **--retweet**          | `-ret` | Retweet a tweet by ID.                                            | `-ret 1234567890`                                       |
+| **--quote**            | `-quo` | Quote-tweet a tweet by ID with added text.                        | `-quo 1234567890`                                       |
+| **--follow**           | `-fol` | Follow a user by username.                                        | `-fol TwitterDev`                                       |
+| **--unfollow**         | `-unf` | Unfollow a user by username.                                      | `-unf TwitterDev`                                       |
+| **--profile**          | `-pr`  | Open your own Twitter profile page.                               | `-pr`                                                   |
+| **--summarize**        | `-sum` | Summarize scraped tweets.                                         | `-sum`                                                  |
+| **--output**           | `-out` | Output file to save scraped tweets (`CSV` or `JSON`).             | `-out tweets.csv` or `-out tweets.json`                 |
+| **--help**             | `-h`   | Shows help message with details of available arguments.           | `-h`                                                    |
 
 > **Note**: Use the `--search` argument to scrape tweets for the given term. By default, a maximum of 50 tweets are collected, unless you change the code or add advanced arguments (will be done later...).  
 > **Important**: The script **requires** both `-e / --email` and `-p / --password` for any action that interacts with Twitter’s interface.
