@@ -1,5 +1,13 @@
+# src/argument_parser.py
 import argparse
 import logging
+
+from src.search import search_for_term
+from src.interaction import like_tweet, comment_on_tweet, retweet_tweet, quote_tweet
+from src.user import TwitterUser
+from src.scraper import TwitterScraper
+from src.summarizer import summarize_scraped_data
+from src import utils
 
 # Set up logging configuration
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(message)s")
@@ -47,10 +55,15 @@ def parse_arguments():
         "-unf", "--unfollow", type=str, help="Unfollow a user by username"
     )
     parser.add_argument(
-        "-pr", "--profile", action="store_true", help="Open the user's profile page"
+        "-pr", "--profile", action="store_true", help="Open your profile page"
     )
     parser.add_argument(
         "-out", "--output", type=str, help="Output file for results (CSV, JSON, etc.)"
+    )
+
+    # Summarize scraped tweets
+    parser.add_argument(
+        "-sum", "--summarize", action="store_true", help="Summarize scraped tweets"
     )
 
     # Parse arguments
@@ -63,92 +76,93 @@ def parse_arguments():
 
 
 def handle_actions(args):
-    """Handles each action based on the arguments."""
+    """
+    Handles each action based on the arguments.
+    We create a single scraper instance if needed, and close it after the actions.
+    """
+    scraper = None
+    user_actions = None
 
-    actions = {
-        "search": handle_search,
-        "like": handle_like,
-        "tweet": handle_tweet,
-        "comment": handle_comment,
-        "retweet": handle_retweet,
-        "quote": handle_quote,
-        "follow": handle_follow,
-        "unfollow": handle_unfollow,
-        "profile": handle_profile,
-        "output": handle_output,
-    }
+    # Because search, follow, tweet, etc., require login, create the scraper and log in once if needed
+    if any(
+        [
+            args.search,
+            args.like,
+            args.comment,
+            args.retweet,
+            args.quote,
+            args.follow,
+            args.unfollow,
+            args.profile,
+            args.tweet,
+        ]
+    ):
 
-    # Iterate over the actions and call the corresponding functions
-    for action, func in actions.items():
-        if getattr(args, action):
-            func(args)
+        # Initialize the scraper and log in
+        scraper = TwitterScraper(email=args.email, password=args.password)
+        scraper.login()
+        user_actions = TwitterUser(scraper.driver, scraper.actions)
 
+    # 1. SEARCH
+    if args.search:
+        logging.info(f"Searching for: {args.search}")
+        search_for_term(scraper, args.search)
 
-def handle_search(args):
-    """Handles search action."""
-    logging.info(f"Searching for: {args.search}")
-    logging.info(f"Search performed for: {args.search}")
-    # Placeholder for search functionality
+    # 2. LIKE
+    if args.like:
+        logging.info(f"Liking tweet with ID: {args.like}")
+        like_tweet(scraper.driver, tweet_id=args.like)
 
+    # 3. TWEET
+    if args.tweet:
+        logging.info(f"Posting tweet: {args.tweet}")
+        user_actions.create_new_tweet(args.tweet)
 
-def handle_like(args):
-    """Handles like action."""
-    logging.info(f"Liking tweet with ID: {args.like}")
-    logging.info(f"Liked tweet with ID: {args.like}")
-    # Placeholder for like functionality
+    # 4. COMMENT
+    if args.comment:
+        logging.info(f"Commenting on tweet with ID: {args.comment}")
+        comment_on_tweet(
+            scraper.driver,
+            scraper.actions,
+            tweet_id=args.comment,
+            text="This is a comment!",
+        )
 
+    # 5. RETWEET
+    if args.retweet:
+        logging.info(f"Retweeting tweet with ID: {args.retweet}")
+        retweet_tweet(scraper.driver, tweet_id=args.retweet)
 
-def handle_tweet(args):
-    """Handles tweet action."""
-    logging.info(f"Posting tweet: {args.tweet}")
-    logging.info(f"Tweet posted: {args.tweet}")
-    # Placeholder for tweet functionality
+    # 6. QUOTE
+    if args.quote:
+        logging.info(f"Quoting tweet with ID: {args.quote}")
+        quote_tweet(scraper.driver, tweet_id=args.quote, quote_text="My thoughts...")
 
+    # 7. FOLLOW
+    if args.follow:
+        logging.info(f"Following user: {args.follow}")
+        user_actions.follow_user(args.follow)
 
-def handle_comment(args):
-    """Handles comment action."""
-    logging.info(f"Commenting on tweet with ID: {args.comment}")
-    logging.info(f"Commented on tweet with ID: {args.comment}")
-    # Placeholder for comment functionality
+    # 8. UNFOLLOW
+    if args.unfollow:
+        logging.info(f"Unfollowing user: {args.unfollow}")
+        user_actions.unfollow_user(args.unfollow)
 
+    # 9. PROFILE
+    if args.profile:
+        logging.info("Opening user profile page...")
+        user_actions.open_profile_page()
 
-def handle_retweet(args):
-    """Handles retweet action."""
-    logging.info(f"Retweeting tweet with ID: {args.retweet}")
-    logging.info(f"Retweeted tweet with ID: {args.retweet}")
-    # Placeholder for retweet functionality
+    # Summarize any scraped tweets so far
+    if args.summarize and scraper:
+        summarize_scraped_data(scraper.data)
 
+    # 10. OUTPUT
+    if args.output and scraper and scraper.data:
+        logging.info(f"Saving output to: {args.output}")
+        scraper.save_data(output_file=args.output)
 
-def handle_quote(args):
-    """Handles quote action."""
-    logging.info(f"Quoting tweet with ID: {args.quote}")
-    logging.info(f"Quoted tweet with ID: {args.quote}")
-    # Placeholder for quote functionality
-
-
-def handle_follow(args):
-    """Handles follow action."""
-    logging.info(f"Following user: {args.follow}")
-    logging.info(f"Followed user: {args.follow}")
-    # Placeholder for follow functionality
-
-
-def handle_unfollow(args):
-    """Handles unfollow action."""
-    logging.info(f"Unfollowing user: {args.unfollow}")
-    logging.info(f"Unfollowed user: {args.unfollow}")
-    # Placeholder for unfollow functionality
-
-
-def handle_profile(args):
-    """Handles profile action."""
-    logging.info("Opening user profile...")
-    logging.info("Profile opened")
-    # Placeholder for profile functionality
-
-
-def handle_output(args):
-    """Handles output action."""
-    logging.info(f"Saving output to: {args.output}")
-    logging.info(f"Output saved to: {args.output}")
-    # Placeholder for output functionality
+    # Quit the driver if it was created
+    if scraper:
+        scraper.driver.quit()
+        logging.info("WebDriver closed.")

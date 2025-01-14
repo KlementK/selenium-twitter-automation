@@ -1,3 +1,4 @@
+# src/scroller.py
 import logging
 
 # Set up logging configuration
