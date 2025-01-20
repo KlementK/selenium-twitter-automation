@@ -72,9 +72,9 @@ selenium-twitter-automation/
 
 ## **Prerequisites**
 
-1. **Python 3.8+** must be installed.
-2. **Firefox Browser** must be installed.
-3. **Geckodriver**: must be downloaded.
+1. **Python 3.8+**.
+2. **Firefox Browser**.
+3. **Geckodriver**:
    - You can download Geckodriver from [Mozilla Geckodriver Releases](https://github.com/mozilla/geckodriver/releases).
 4. Ensure `geckodriver.exe` is placed in a folder named `webdriver/` inside the project directory.  
     
